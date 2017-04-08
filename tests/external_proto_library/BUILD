@@ -5,16 +5,32 @@ load("//java:rules.bzl", "java_proto_library")
 load("//go:rules.bzl", "go_proto_library")
 
 cc_proto_library(
+    name = "cc_label_proto",
+    protos = [
+        "@com_github_googleapis_googleapis//:labelproto",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+cc_proto_library(
     name = "cc_gapi",
     imports = [
         "external/com_github_googleapis_googleapis",
         #'external/com_github_google_protobuf/src',
     ],
     proto_deps = [
-        "@com_github_googleapis_googleapis//:cc_label_proto",
+        ":cc_label_proto",
     ],
     protos = ["message.proto"],
     verbose = 0,
+)
+
+java_proto_library(
+    name = "java_label_proto",
+    protos = [
+        "@com_github_googleapis_googleapis//:labelproto",
+    ],
+    visibility = ["//visibility:private"],
 )
 
 java_proto_library(
@@ -24,7 +40,7 @@ java_proto_library(
         #'external/com_github_google_protobuf/src',
     ],
     proto_deps = [
-        "@com_github_googleapis_googleapis//:java_label_proto",
+        ":java_label_proto",
     ],
     protos = ["message.proto"],
     # inputs = [
@@ -32,6 +48,15 @@ java_proto_library(
     #     "@com_github_google_protobuf//:well_known_protos"
     # ],
     verbose = 0,
+)
+
+# This is failing, unlike the other proto libraries above. 
+go_proto_library(
+    name = "go_label_proto",
+    protos = [
+        "@com_github_googleapis_googleapis//:labelproto",
+    ],
+    visibility = ["//visibility:private"],
 )
 
 go_proto_library(
@@ -45,7 +70,7 @@ go_proto_library(
         #"@com_github_google_protobuf//:well_known_protos"
     ],
     proto_deps = [
-        "@com_github_googleapis_googleapis//:go_label_proto",
+        ":go_label_proto",
     ],
     protos = ["message.proto"],
     verbose = 0,

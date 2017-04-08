@@ -6,7 +6,7 @@ workspace(name = "org_pubref_rules_protobuf")
 
 git_repository(
     name = "io_bazel_rules_go",
-    commit = "4c73b9cb84c1f8e32e7df3c26e237439699d5d8c",
+    tag = "0.4.2",
     remote = "https://github.com/bazelbuild/rules_go.git",
 )
 
@@ -48,7 +48,7 @@ csharp_repositories(use_local_mono = False)
 
 git_repository(
     name = "org_pubref_rules_node",
-    commit = "85b720f3d4299b0a1b9c7771c023352e9182045f",  # Oct 10, 2016
+    commit = "218654c2d5aad5f45420a1923e01345129f70c10",  # Feb 5, 2017
     remote = "https://github.com/pubref/rules_node.git",
 )
 
@@ -110,50 +110,23 @@ ruby_proto_repositories()
 # This is for testing
 # ================================================================
 
-local_repository(
-    name = "org_pubref_rules_protobuf",
-    path = ".",
-)
-
 GOOGLEAPIS_BUILD_FILE = """
 package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_go//go:def.bzl", "go_prefix")
 go_prefix("github.com/googleapis/googleapis")
 
-load("@org_pubref_rules_protobuf//cpp:rules.bzl", "cc_proto_library")
-load("@org_pubref_rules_protobuf//java:rules.bzl", "java_proto_library")
-load("@org_pubref_rules_protobuf//go:rules.bzl", "go_proto_library")
-
-cc_proto_library(
-    name = "cc_label_proto",
-    protos = [
+filegroup(
+    name = "labelproto",
+    srcs = glob([
         "google/api/label.proto",
-    ],
-    verbose = 0,
-)
-java_proto_library(
-    name = "java_label_proto",
-    protos = [
-        "google/api/label.proto",
-    ],
-    # Neither seem to be necessary, for either 3 langs
-    #imports = ["../../external/com_github_google_protobuf/src", "."],
-    #inputs = ["@com_github_google_protobuf//:well_known_protos"],
-    verbose = 0,
-)
-go_proto_library(
-    name = "go_label_proto",
-    protos = [
-        "google/api/label.proto",
-    ],
-    verbose = 0,
+    ]),
 )
 """
 
 new_git_repository(
     name = "com_github_googleapis_googleapis",
     build_file_content = GOOGLEAPIS_BUILD_FILE,
-    commit = "13ac2436c5e3d568bd0e938f6ed58b77a48aba15",
+    commit = "acb713b289aac5f922396a4d897ee5be5b4136e9", # Apr 7, 2017 
     remote = "https://github.com/googleapis/googleapis.git",
 )
